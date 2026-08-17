@@ -226,27 +226,45 @@ void acharMaisSemelhantes(
 {
     calcularMatrizDistancias(nome, notas, matrizDistancias);
     
-    float menorDistancia = FLT_MAX;
+    char nomeBusca[MAX_CARACTERES_NOME];
     
-    int pessoaA = 0;
-    int pessoaB = 0;
+    printf("\nDigite o nome da pessoa:");
+    scanf(" %[^\n]", nomeBusca);
+    
+    int pessoaA = -1;
     
     for (int i = 0; i < MAX_PESSOAS; i++)
     {
-        for (int j = 0; j < i; j++)
+        if (strcmp(nome[i], nomeBusca) == 0)
         {
-            if (menorDistancia >= matrizDistancias[i][j])
+            pessoaA = i;
+            break;
+        }
+    }
+    
+    if (pessoaA == -1)
+    {
+        printf("\nPessoa não encontrada.\n");
+        return;
+    }
+    
+    float menorDistancia = FLT_MAX;
+    int pessoaB = -1;
+    
+    for (int j = 0; j < MAX_PESSOAS; j++)
+    {
+        if (j != pessoaA)
+        {
+            if (matrizDistancias[pessoaA][j] < menorDistancia)
             {
-                menorDistancia = matrizDistancias[i][j];
-                
-                pessoaA = i;
+                menorDistancia = matrizDistancias[pessoaA][j];
                 pessoaB = j;
             }
         }
     }
     
-    printf("\n\nPESSOAS MAIS SEMELHANTES SÃO:\n");
-    printf("%s e %s", nome[pessoaA], nome[pessoaB]);
+    printf("\n\nPESSOA MAIS SEMELHANTE A %s é: ", nome[pessoaA]);
+    printf("%s", nome[pessoaB]);
     printf("\nDistãncia: %.2f\n\n", menorDistancia);
 }
 
